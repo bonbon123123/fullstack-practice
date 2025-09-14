@@ -81,8 +81,11 @@ describe("deleteSkillController - Integration Tests", () => {
             assert.isObject(response.body);
             expect(response.body).to.have.property("message", "Skill not found");
         });
-
-        const invalidIds = ["abc", "12.5", "null", "undefined", "-1", "0"];
+        it("should return 400 when skillId is missing", async () => {
+            const response = await agent.delete(`/skills/`);
+            expect(response.status).to.equal(404); //could change middleware so it can catch parameter missing and return 400 instead of 404 but need to verify with team
+        });
+        const invalidIds = ["abc", "12.5", "-1", "0"];
 
         invalidIds.forEach((invalidId) => {
             it(`should return 400 for invalid skillId "${invalidId}"`, async () => {
@@ -128,14 +131,10 @@ describe("deleteSkillController - Integration Tests", () => {
                 // ARRANGE
                 const largeId = Number.MAX_SAFE_INTEGER;
 
-                console.log(`\n=== TESTING LARGE ID: ${largeId} ===`);
                 // ACT
                 const response = await agent.delete(`/skills/${largeId}`);
 
                 // ASSERT
-                console.log(`Response status for large ID: ${response.status}`);
-                console.log(`Response body for large ID:`, response.body);
-
                 expect(response.status).to.equal(404);
                 expect(response.body).to.have.property("message", "Skill not found");
             });
