@@ -3,7 +3,10 @@
     "target": "es2019",
     "module": "commonjs",
     "moduleResolution": "node",
-    "types": ["node", "mocha"],
+    "types": [
+      "node",
+      "mocha"
+    ],
     "baseUrl": ".",
     "alwaysStrict": true,
     "noImplicitThis": true,
@@ -19,9 +22,16 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "paths": {
-      "app/*": ["src/*"],
-      "*": ["./types/*"]
+      "app/*": [
+        "src/*"
+      ],
+      "*": [
+        "./types/*"
+      ]
     },
-    "typeRoots": ["./node_modules/@types", "./types"]
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ]
   }
 }

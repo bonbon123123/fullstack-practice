@@ -2,8 +2,12 @@ import chai, { expect, assert } from "chai";
 import chaiHttp from "chai-http";
 import { SkillDto } from "app/api/dtos/SkillDto";
 import { getTestApp, TestApp } from "app/setup-integration-tests.test";
+import { SkillsMockStorage } from "app/storages/SkillsMockStorage";
+import { clearDb } from "../../../testUtils/clearDb"; // can be relative
 
 chai.use(chaiHttp);
+
+const isMock = process.env.USE_DB_MOCK === "true";
 
 describe("createSkillController - Integration Tests", () => {
     let testApp: TestApp;
@@ -12,9 +16,15 @@ describe("createSkillController - Integration Tests", () => {
     beforeEach(async () => {
         testApp = await getTestApp();
         agent = chai.request.agent(testApp.app);
+
+        if (testApp.services.storages.skillsStorage instanceof SkillsMockStorage) {
+            (testApp.services.storages.skillsStorage as SkillsMockStorage)["skills"] = [];
+        } else if (testApp.services.storages.knex) {
+            await clearDb(testApp.services.storages.knex);
+        }
     });
 
-    describe("createSkillController - valid skill rates", () => {
+    describe("valid skill rates", () => {
         const cases = [
             { name: "SkillZero", rate: 0, desc: "rate = 0" },
             { name: "SkillMid", rate: 5, desc: "rate = 5" },
@@ -46,7 +56,6 @@ describe("createSkillController - Integration Tests", () => {
         });
     });
 
-
     it("should persist skill in storage", async () => {
         // ARRANGE
         const skillData = { name: "Vue.js", rate: 7 };
@@ -70,7 +79,6 @@ describe("createSkillController - Integration Tests", () => {
         ];
 
         for (const skillData of invalidCases) {
-
             // ACT
             const response = await agent.post("/skills").send(skillData);
 
@@ -79,14 +87,11 @@ describe("createSkillController - Integration Tests", () => {
         }
     });
 
-    describe("skill name variations", () => {
+    describe("skill name variations (mock and real DB)", () => {
         const cases = [
-            { name: " ", desc: "very short name" }, //that should probably be invalidskill name bui i write tests not this controller
+            { name: " ", desc: "very short name" },
             { name: "C++/C#/.NET/!@#$%^&*()<>?:{}_+-=[];',./`~*", desc: "special characters" },
-            {
-                name: "A".repeat(255),
-                desc: "long skill name",
-            }
+            { name: "A".repeat(255), desc: "long skill name" }
         ];
 
         cases.forEach(({ name, desc }) => {
@@ -100,7 +105,6 @@ describe("createSkillController - Integration Tests", () => {
                 // ASSERT
                 expect(response.status).to.equal(200);
                 const skill = response.body as SkillDto;
-
                 expect(skill).to.have.property("name", name);
                 assert.isString(skill.name, "name should be string");
                 assert.isNumber(skill.rate, "rate should be number");
@@ -108,38 +112,40 @@ describe("createSkillController - Integration Tests", () => {
         });
     });
 
-    describe("invalid skill names", () => {
-        it("should return 500 when name is missing", async () => {
-            // ARRANGE
-            const skillData = { rate: 5 };
+    describe("invalid skill names (only real DB)", () => {
+        if (!isMock) {
+            it("should return 500 when name is missing", async () => {
+                // ARRANGE
+                const skillData = { rate: 5 };
 
-            // ACT
-            const response = await agent.post("/skills").send(skillData);
+                // ACT
+                const response = await agent.post("/skills").send(skillData);
 
-            // ASSERT
-            expect(response.status).to.equal(500);
-        });
+                // ASSERT
+                expect(response.status).to.equal(500);
+            });
 
-        it("should return 500 when name is empty string", async () => {
-            // ARRANGE
-            const skillData = { name: "", rate: 5 };
+            it("should return 500 when name is empty string", async () => {
+                // ARRANGE
+                const skillData = { name: "", rate: 5 };
 
-            // ACT
-            const response = await agent.post("/skills").send(skillData);
+                // ACT
+                const response = await agent.post("/skills").send(skillData);
 
-            // ASSERT
-            expect(response.status).to.equal(500);
-        });
+                // ASSERT
+                expect(response.status).to.equal(500);
+            });
 
-        it("should return 500 for very long name exceeding 255 chars", async () => {
-            // ARRANGE
-            const skillData = { name: "X".repeat(256), rate: 5 };
+            it("should return 500 for very long name exceeding 255 chars", async () => {
+                // ARRANGE
+                const skillData = { name: "X".repeat(256), rate: 5 };
 
-            // ACT
-            const response = await agent.post("/skills").send(skillData);
+                // ACT
+                const response = await agent.post("/skills").send(skillData);
 
-            // ASSERT
-            expect(response.status).to.equal(500);
-        });
+                // ASSERT
+                expect(response.status).to.equal(500);
+            });
+        }
     });
 });
