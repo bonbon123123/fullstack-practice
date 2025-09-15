@@ -10,6 +10,8 @@
     "start": "nodemon --ext ts --watch src --watch types --exec 'npm run start:local'",
     "start:local": "npm run node -- src/server.ts",
     "start:services": "docker-compose rm --force && docker-compose up --build",
+    "start:frontend": "docker-compose rm --force && docker-compose up --build frontend",
+    "start:stack": "concurrently \"npm run start\" \"docker-compose up --build\"",
     "test": "npm run mocha -- 'tests/**/*.test.ts' --exclude '**/flycheck_*.ts'",
     "test:types": "tsc --noEmit --project .",
     "lint": "eslint '**/*.ts'",
