@@ -6,7 +6,6 @@ export const deleteSkillController = (app: AppServices) => {
   return async (req: Request, res: Response) => {
     const skillIdParam = req.params.skillId;
 
-    // Validate param exists and is digits only
     if (typeof skillIdParam !== "string" || !skillIdParam.trim() || !/^\d+$/.test(skillIdParam)) {
       throw new HttpErrorResponse(400, { message: "Invalid skill ID" });
     }

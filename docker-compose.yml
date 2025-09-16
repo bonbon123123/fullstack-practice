@@ -1,24 +1,74 @@
-version: "3.8"
-
 services:
   postgres:
     container_name: fullstack-interview-postgres
     image: postgres:16.1-bullseye
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: changeme
       PGDATA: /data/postgres
       DATABASE: fullstack_interview_dev_local
       DATABASE_TESTS: fullstack_interview_dev_tests
     volumes:
       - ./scripts/db/init:/docker-entrypoint-initdb.d
+      - postgres_data:/data/postgres
     ports:
       - "5434:5432"
     networks:
-      - postgres
-    # To log all queries:
-    # command: ["postgres", "-c", "log_statement=all"]
+      - appnet
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    container_name: fullstack-interview-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "8082:8082"
+    environment:
+      NODE_ENV: docker
+      PGHOST: postgres
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: changeme
+      PGDATABASE: fullstack_interview_dev_local
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - appnet
+
+  frontend:
+    container_name: fullstack-interview-frontend
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    volumes:
+      - ./front-end:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3001:3000"
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+      REACT_APP_API_URL: http://localhost:8082
+    stdin_open: true
+    tty: true
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - appnet
+
+volumes:
+  postgres_data:
+
 
 networks:
-  postgres:
+  appnet:
     driver: bridge
