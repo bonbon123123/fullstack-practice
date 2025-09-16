@@ -25,18 +25,21 @@ Project can contain a few "not the best" solutions that can be pointed out by th
 ## troubleshooting
 
 - in case of error related to installing dependencies install `libpq` (on mac: `brew install libpq`)
-
+  
 ## Structure
 
-Tasks are on cascading branches main <- task1 <- task2  <- task3
-Final version is on task3 branch
+Tasks are organized on cascading branches:  
+`main` <- `task1` <- `task2` <- `task3`  
+The final version of the project is on the `task3` branch.
 
 ## Testing
 
-To see applicaton in work it can be run local with postgress docker `npm run dev:local`
-or everything on docker `npm run dev:docker`
-allso only database `npm run dev:db-only`
-test work as described originally but can be run when postgress ir run by diffrent means
+To run the application locally:  
+- With PostgreSQL in Docker: `npm run dev:local`  
+- Entire stack in Docker: `npm run dev:docker`  
+- Only the database: `npm run dev:db-only`  
+
+Tests can be executed as described in the original instructions. They can run even if PostgreSQL is started separately or by other means.
 
 ## Not the best pracices:
 
