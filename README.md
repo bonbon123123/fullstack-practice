@@ -38,7 +38,7 @@ or everything on docker `npm run dev:docker`
 allso only database `npm run dev:db-only`
 test work as described originally but can be run when postgress ir run by diffrent means
 
-##Not the best pracices:
+## Not the best pracices:
 
 - **Script clutter** – some scripts contain similar functionalities that could be consolidated.  
 - **Environment variables** – `.env` files should normally be added to `.gitignore` to avoid committing sensitive data.  
