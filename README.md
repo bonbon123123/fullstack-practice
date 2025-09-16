@@ -26,17 +26,20 @@ Project can contain a few "not the best" solutions that can be pointed out by th
 
 - in case of error related to installing dependencies install `libpq` (on mac: `brew install libpq`)
 
-##Structure
+## Structure
+
 Tasks are on cascading branches main <- task1 <- task2  <- task3
 Final version is on task3 branch
 
-##Testing
+## Testing
+
 To see applicaton in work it can be run local with postgress docker `npm run dev:local`
 or everything on docker `npm run dev:docker`
 allso only database `npm run dev:db-only`
 test work as described originally but can be run when postgress ir run by diffrent means
 
 ##Not the best pracices:
+
 - **Script clutter** – some scripts contain similar functionalities that could be consolidated.  
 - **Environment variables** – `.env` files should normally be added to `.gitignore` to avoid committing sensitive data.  
 - **Import paths** – setting up path aliases in `tsconfig.json` would help avoid relative file imports.  
