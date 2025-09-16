@@ -24,7 +24,7 @@ export const SkillsList: React.FC<SkillsListProps> = ({
             <div className="flex items-center justify-center py-12">
                 <div className="text-center">
                     <LoadingSpinner size="lg" className="mx-auto mb-4" />
-                    <p className="text-gray-600">{t('loading_skills')}</p>
+                    <p className="text-gray-600 dark:text-gray-300">{t('loading_skills')}</p>
                 </div>
             </div>
         );
@@ -33,9 +33,9 @@ export const SkillsList: React.FC<SkillsListProps> = ({
     if (skills.length === 0) {
         return (
             <div className="text-center py-12">
-                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-gray-100 mb-4">
+                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-gray-100 dark:bg-gray-700 mb-4">
                     <svg
-                        className="h-6 w-6 text-gray-400"
+                        className="h-6 w-6 text-gray-400 dark:text-gray-300"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -48,10 +48,10 @@ export const SkillsList: React.FC<SkillsListProps> = ({
                         />
                     </svg>
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
                     {t('no_skills')}
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-300">
                     {t('add_first_skill')}
                 </p>
             </div>
@@ -61,11 +61,12 @@ export const SkillsList: React.FC<SkillsListProps> = ({
     return (
         <div>
             <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-800">
+                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
                     {t('your_skills')}
                 </h2>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                    {skills.length} {skills.length === 1 ? t('skill_count_single') : t('skill_count_plural')}
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                    {skills.length}{' '}
+                    {skills.length === 1 ? t('skill_count_single') : t('skill_count_plural')}
                 </span>
             </div>
 

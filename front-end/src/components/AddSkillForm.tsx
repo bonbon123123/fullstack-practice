@@ -64,8 +64,8 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
                 {t('add_skill')}
             </h2>
 
@@ -81,7 +81,7 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
                 />
 
                 <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         {t('skill_level')}
                     </label>
                     <div className="flex items-center space-x-4">
@@ -92,16 +92,16 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
                             value={formData.rate}
                             onChange={handleRateChange}
                             disabled={isLoading}
-                            className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                            className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
                         />
                         <div className="min-w-[3rem] text-center">
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
                                 {formData.rate}
                             </span>
                         </div>
                     </div>
                     {errors.rate && (
-                        <p className="mt-1 text-sm text-red-600">{errors.rate}</p>
+                        <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.rate}</p>
                     )}
                 </div>
 
