@@ -18,4 +18,10 @@ export class SkillsMockStorage implements SkillsStorage {
     this.skills.push(skillEntity);
     return skillEntity;
   }
+
+  async delete(skillId: number): Promise<boolean> {
+    const initialLength = this.skills.length;
+    this.skills = this.skills.filter(skill => skill.skillId !== skillId);
+    return this.skills.length < initialLength;
+  }
 }

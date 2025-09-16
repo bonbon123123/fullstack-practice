@@ -5,11 +5,10 @@ import { z } from "zod";
 import { SkillsStorage } from "app/storages/SkillsStorage";
 
 export class SkillsDbStorage implements SkillsStorage {
-  constructor(private readonly database: Knex) {}
+  constructor(private readonly database: Knex) { }
 
   async getAll(): Promise<SkillEntity[]> {
     const result = await this.database(Table.Skills).select("*");
-
     return z.array(skillEntitySchema).parse(result);
   }
 
@@ -22,5 +21,13 @@ export class SkillsDbStorage implements SkillsStorage {
       .returning("*");
 
     return skillEntitySchema.parse(result);
+  }
+
+  async delete(skillId: number): Promise<boolean> {
+    const deletedRows = await this.database(Table.Skills)
+      .where({ skillId })
+      .del();
+
+    return deletedRows > 0;
   }
 }
