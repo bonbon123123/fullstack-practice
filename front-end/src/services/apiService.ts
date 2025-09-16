@@ -66,7 +66,7 @@ class ApiService {
     }
 
     async updateSkill(skill: Skill): Promise<Skill> {
-        return this.request<Skill>(`/skills/${skill.id}`, {
+        return this.request<Skill>(`/skills/${skill.skillId}`, {
             method: 'PUT',
             body: JSON.stringify(skill),
         });

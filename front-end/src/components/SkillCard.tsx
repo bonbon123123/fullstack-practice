@@ -1,6 +1,7 @@
 import React from 'react';
 import { Skill } from '../types/Skill';
 import { Button } from './ui/Button';
+import { useTranslation } from './LanguageProvider';
 
 interface SkillCardProps {
     skill: Skill;
@@ -13,6 +14,8 @@ export const SkillCard: React.FC<SkillCardProps> = ({
     onDelete,
     isDeleting = false
 }) => {
+    const { t } = useTranslation();
+
     const getRatingColor = (rate: number) => {
         if (rate >= 8) return 'text-green-600 bg-green-100';
         if (rate >= 5) return 'text-yellow-600 bg-yellow-100';
@@ -20,8 +23,8 @@ export const SkillCard: React.FC<SkillCardProps> = ({
     };
 
     const handleDelete = () => {
-        if (window.confirm(`Are you sure you want to delete the skill "${skill.name}"?`)) {
-            onDelete(skill.id);
+        if (window.confirm(t('confirm_delete_skill', { skillName: skill.name }))) {
+            onDelete(skill.skillId);
         }
     };
 
@@ -40,7 +43,7 @@ export const SkillCard: React.FC<SkillCardProps> = ({
 
             <div className="mb-4">
                 <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-gray-600">Skill Level</span>
+                    <span className="text-sm text-gray-600">{t('skill_level')}</span>
                     <span className="text-sm font-medium text-gray-800">{skill.rate}/10</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
@@ -58,7 +61,7 @@ export const SkillCard: React.FC<SkillCardProps> = ({
                     size="sm"
                     disabled={isDeleting}
                 >
-                    {isDeleting ? 'Deleting...' : 'Delete'}
+                    {isDeleting ? t('deleting') : t('delete')}
                 </Button>
             </div>
         </div>

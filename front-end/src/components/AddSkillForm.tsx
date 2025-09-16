@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CreateSkillRequest } from '../types/Skill';
 import { Input } from './ui/Input';
 import { Button } from './ui/Button';
+import { useTranslation } from './LanguageProvider';
 
 interface AddSkillFormProps {
     onSubmit: (skill: CreateSkillRequest) => Promise<void>;
@@ -12,6 +13,8 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
     onSubmit,
     isLoading = false
 }) => {
+    const { t } = useTranslation();
+
     const [formData, setFormData] = useState<CreateSkillRequest>({
         name: '',
         rate: 1,
@@ -22,13 +25,13 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
         const newErrors: { name?: string; rate?: string } = {};
 
         if (!formData.name.trim()) {
-            newErrors.name = 'Skill name is required';
+            newErrors.name = t('error_name_required');
         } else if (formData.name.trim().length < 2) {
-            newErrors.name = 'Name must be at least 2 characters long';
+            newErrors.name = t('error_name_length');
         }
 
         if (formData.rate < 0 || formData.rate > 10) {
-            newErrors.rate = 'Rating must be between 0 and 10';
+            newErrors.rate = t('error_rate_range');
         }
 
         setErrors(newErrors);
@@ -38,9 +41,7 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!validateForm()) {
-            return;
-        }
+        if (!validateForm()) return;
 
         try {
             await onSubmit(formData);
@@ -53,39 +54,35 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, name: e.target.value });
-        if (errors.name) {
-            setErrors({ ...errors, name: undefined });
-        }
+        if (errors.name) setErrors({ ...errors, name: undefined });
     };
 
     const handleRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const rate = parseInt(e.target.value, 10);
         setFormData({ ...formData, rate: isNaN(rate) ? 0 : rate });
-        if (errors.rate) {
-            setErrors({ ...errors, rate: undefined });
-        }
+        if (errors.rate) setErrors({ ...errors, rate: undefined });
     };
 
     return (
         <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                Add New Skill
+                {t('add_skill')}
             </h2>
 
             <form onSubmit={handleSubmit}>
                 <Input
-                    label="Skill Name"
+                    label={t('skill_name')}
                     type="text"
                     value={formData.name}
                     onChange={handleNameChange}
                     error={errors.name}
-                    placeholder="e.g., React, TypeScript, Node.js"
+                    placeholder={t('skill_name_placeholder')}
                     disabled={isLoading}
                 />
 
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Skill Level (0-10)
+                        {t('skill_level')}
                     </label>
                     <div className="flex items-center space-x-4">
                         <input
@@ -114,7 +111,7 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
                         disabled={isLoading}
                         className="min-w-[120px]"
                     >
-                        {isLoading ? 'Adding...' : 'Add Skill'}
+                        {isLoading ? t('adding') : t('add_skill')}
                     </Button>
                 </div>
             </form>

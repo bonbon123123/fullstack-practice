@@ -1,5 +1,5 @@
 export interface Skill {
-    id: number;
+    skillId: number;
     name: string;
     rate: number;
 }

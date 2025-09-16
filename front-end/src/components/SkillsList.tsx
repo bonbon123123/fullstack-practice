@@ -2,6 +2,7 @@ import React from 'react';
 import { Skill } from '../types/Skill';
 import { SkillCard } from './SkillCard';
 import { LoadingSpinner } from './ui/LoadingSpinner';
+import { useTranslation } from './LanguageProvider';
 
 interface SkillsListProps {
     skills: Skill[];
@@ -16,12 +17,14 @@ export const SkillsList: React.FC<SkillsListProps> = ({
     isLoading = false,
     deletingSkillId
 }) => {
+    const { t } = useTranslation();
+
     if (isLoading) {
         return (
             <div className="flex items-center justify-center py-12">
                 <div className="text-center">
                     <LoadingSpinner size="lg" className="mx-auto mb-4" />
-                    <p className="text-gray-600">Loading skills...</p>
+                    <p className="text-gray-600">{t('loading_skills')}</p>
                 </div>
             </div>
         );
@@ -46,10 +49,10 @@ export const SkillsList: React.FC<SkillsListProps> = ({
                     </svg>
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    No skills
+                    {t('no_skills')}
                 </h3>
                 <p className="text-gray-600">
-                    Add your first skill using the form above.
+                    {t('add_first_skill')}
                 </p>
             </div>
         );
@@ -59,20 +62,20 @@ export const SkillsList: React.FC<SkillsListProps> = ({
         <div>
             <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-800">
-                    Your Skills
+                    {t('your_skills')}
                 </h2>
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                    {skills.length} {skills.length === 1 ? 'skill' : 'skills'}
+                    {skills.length} {skills.length === 1 ? t('skill_count_single') : t('skill_count_plural')}
                 </span>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {skills.map((skill) => (
                     <SkillCard
-                        key={skill.id}
+                        key={skill.skillId}
                         skill={skill}
                         onDelete={onDeleteSkill}
-                        isDeleting={deletingSkillId === skill.id}
+                        isDeleting={deletingSkillId === skill.skillId}
                     />
                 ))}
             </div>
