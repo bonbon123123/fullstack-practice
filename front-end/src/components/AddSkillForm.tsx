@@ -26,7 +26,7 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = ({
 
         if (!formData.name.trim()) {
             newErrors.name = t('error_name_required');
-        } else if (formData.name.trim().length < 2) {
+        } else if (formData.name.trim().length > 255) {
             newErrors.name = t('error_name_length');
         }
 

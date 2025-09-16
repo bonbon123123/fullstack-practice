@@ -22,7 +22,7 @@
     "deleting": "Usuwanie...",
     "confirm_delete_skill": "Czy na pewno chcesz usunąć umiejętność \"{{skillName}}\"?",
     "error_name_required": "Nazwa umiejętności jest wymagana",
-    "error_name_length": "Nazwa musi mieć co najmniej 2 znaki",
+    "error_name_length": "Nazwa jest za długa",
     "error_rate_range": "Poziom umiejętności musi być w zakresie 0-10",
     "skill_name_placeholder": "np. React, TypeScript, Node.js"
 }

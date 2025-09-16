@@ -22,7 +22,7 @@
     "deleting": "Deleting...",
     "confirm_delete_skill": "Are you sure you want to delete the skill \"{{skillName}}\"?",
     "error_name_required": "Skill name is required",
-    "error_name_length": "Name must be at least 2 characters long",
+    "error_name_length": "Name too long",
     "error_rate_range": "Rating must be between 0 and 10",
     "skill_name_placeholder": "e.g., React, TypeScript, Node.js"
 }

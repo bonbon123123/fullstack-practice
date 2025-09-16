@@ -18,7 +18,6 @@ function App() {
     const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'disconnected'>('checking');
     const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('theme') === 'dark');
 
-    // Sync dark mode with document root
     useEffect(() => {
         const root = window.document.documentElement;
         if (isDarkMode) {
@@ -153,7 +152,6 @@ function App() {
                             ))}
                         </select>
 
-                        {/* Dark/Light Mode Slider */}
                         <label htmlFor="dark-mode-toggle" className="flex items-center cursor-pointer">
                             <div className="relative">
                                 <input
