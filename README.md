@@ -25,3 +25,31 @@ Project can contain a few "not the best" solutions that can be pointed out by th
 ## troubleshooting
 
 - in case of error related to installing dependencies install `libpq` (on mac: `brew install libpq`)
+  
+## Structure
+
+Tasks are organized on cascading branches:  
+`main` <- `task1` <- `task2` <- `task3`  
+The final version of the project is on the `task3` branch.
+
+## Testing
+
+To run the application locally:  
+- With PostgreSQL in Docker: `npm run dev:local`  
+- Entire stack in Docker: `npm run dev:docker`  
+- Only the database: `npm run dev:db-only`  
+
+Tests can be executed as described in the original instructions. They can run even if PostgreSQL is started separately or by other means.
+
+## Not the best pracices:
+
+- **Script clutter** – some scripts contain similar functionalities that could be consolidated.  
+- **Environment variables** – `.env` files should normally be added to `.gitignore` to avoid committing sensitive data.  
+- **Import paths** – setting up path aliases in `tsconfig.json` would help avoid relative file imports.  
+- **Team coordination** – some changes were made to existing files (e.g., error-handling middleware) that should ideally be discussed with the team before modifying.  
+- **Component exports** – components could be exported from their folders using an `index.ts` that re-exports the component, making scope management cleaner.  
+- **Localization** – using a library like `i18next` would allow proper handling of translations per component instead of a shared pool of hard-coded translations.  
+- **App structure** – currently all components, fetches, and `useEffect` calls are in `App.tsx`. It could be split so that individual components (e.g., `SkillsList`) handle their own data and pagination, improving performance for larger datasets.  
+- **Front-end testing** – there are no front-end tests implemented, even though testing libraries are installed.  
+- **API service** – `apiService.ts` could be divided into separate modules for better maintainability.  
+- **Fetch requests** – using `axios` or a custom wrapper around `fetch` could improve consistency, error handling, and readability of API calls.
